@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Innoexts
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@innoexts.com so we can send you a copy immediately.
+ *
+ * @category    Innoexts
+ * @package     Innoexts_WarehouseOneStepCheckout
+ * @copyright   Copyright (c) 2013 Innoexts (http://www.innoexts.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<layout>
+    
+    <!-- One Step Checkout Add Extra Product -->
+    <onestepcheckout_ajax_add_extra_product>
+        <reference name="checkout.cart.totals">
+            <action method="setTemplate">
+                <template>warehouseonestepcheckout/onestepcheckout/summary.phtml</template>
+            </action>
+        </reference>
+    </onestepcheckout_ajax_add_extra_product>
+
+    <!-- One Step Checkout Set Methods Separate -->
+    <onestepcheckout_ajax_set_methods_separate>
+        <reference name="onestepcheckout.summary">
+            <action method="setTemplate">
+                <template>warehouseonestepcheckout/onestepcheckout/summary.phtml</template>
+            </action>
+        </reference>
+    </onestepcheckout_ajax_set_methods_separate>
+
+    <!-- One Step Checkout Payment Refresh -->
+    <onestepcheckout_ajax_paymentrefresh>
+        <reference name="onestepcheckout.summary">
+            <action method="setTemplate">
+                <template>warehouseonestepcheckout/onestepcheckout/summary.phtml</template>
+            </action>
+        </reference>
+    </onestepcheckout_ajax_paymentrefresh>
+
+    <!-- One Step Checkout Save Billing -->
+    <onestepcheckout_ajax_save_billing>
+        <reference name="billing">
+            <reference name="choose-shipping-method">
+                <action method="setTemplate">
+                    <template>warehouseonestepcheckout/onestepcheckout/shipping_method.phtml</template>
+                </action>
+                <action method="setSingleModeRenderer">
+                    <block>warehouse/checkout_onepage_shipping_method_available_singlemode</block>
+                    <template>warehouseonestepcheckout/onestepcheckout/shipping_method/single_mode.phtml</template>
+                </action>
+                <action method="setMultipleModeRenderer">
+                    <block>warehouse/checkout_onepage_shipping_method_available_multiplemode</block>
+                    <template>warehouseonestepcheckout/onestepcheckout/shipping_method/multiple_mode.phtml</template>
+                </action>
+            </reference>
+            <reference name="onestepcheckout.summary">
+                <action method="setTemplate">
+                    <template>warehouseonestepcheckout/onestepcheckout/summary.phtml</template>
+                </action>
+            </reference>
+        </reference>
+    </onestepcheckout_ajax_save_billing>
+
+    <!-- One Step Checkout -->
+    <onestepcheckout_index_index>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/warehouseonestepcheckout/onestepcheckout.js</name>
+            </action>
+            <action method="addCss">
+                <stylesheet>css/warehouseonestepcheckout/onestepcheckout.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="content">
+            <reference name="onestepcheckout.checkout">
+                <action method="setTemplate">
+                    <template>warehouseonestepcheckout/onestepcheckout/checkout.phtml</template>
+                </action>
+                <reference name="onestepcheckout.summary">
+                    <action method="setTemplate">
+                        <template>warehouseonestepcheckout/onestepcheckout/summary.phtml</template>
+                    </action>
+                </reference>
+                <reference name="choose-shipping-method">
+                    <action method="setTemplate">
+                        <template>warehouseonestepcheckout/onestepcheckout/shipping_method.phtml</template>
+                    </action>
+                    <action method="setSingleModeRenderer">
+                        <block>warehouse/checkout_onepage_shipping_method_available_singlemode</block>
+                        <template>warehouseonestepcheckout/onestepcheckout/shipping_method/single_mode.phtml</template>
+                    </action>
+                    <action method="setMultipleModeRenderer">
+                        <block>warehouse/checkout_onepage_shipping_method_available_multiplemode</block>
+                        <template>warehouseonestepcheckout/onestepcheckout/shipping_method/multiple_mode.phtml</template>
+                    </action>
+                </reference>
+            </reference>
+        </reference>
+    </onestepcheckout_index_index>
+
+</layout>

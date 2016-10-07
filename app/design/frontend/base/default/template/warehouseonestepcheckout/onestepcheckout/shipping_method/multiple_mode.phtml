@@ -1,0 +1,123 @@
+<?php
+/**
+ * Innoexts
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the InnoExts Commercial License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://innoexts.com/commercial-license-agreement
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@innoexts.com so we can send you a copy immediately.
+ * 
+ * @category    Innoexts
+ * @package     Innoexts_Warehouse
+ * @copyright   Copyright (c) 2013 Innoexts (http://www.innoexts.com)
+ * @license     http://innoexts.com/commercial-license-agreement  InnoExts Commercial License
+ */
+?>
+
+<?php $helper                       = $this->helper('warehouse') ?>
+<?php $taxHelper                    = $helper->getTaxHelper() ?>
+<?php $config                       = $helper->getConfig() ?>
+<?php $displayShippingPriceIncTax   = $taxHelper->displayShippingPriceIncludingTax() ?>
+<?php $displayShippingBothPrices    = $taxHelper->displayShippingBothPrices() ?>
+<?php $rateIdPrefix                 = 's_method_' ?>
+
+<div id="shipping-method-multiple-mode" class="multiple-mode">
+    <div class="warehouses warehouse-shipping-methods">
+        <?php foreach ($this->getAddresses() as $address) : ?>
+        <?php $warehouse            = $address->getWarehouse() ?>
+        <?php if (!$warehouse || $address->isVirtual()) continue; ?>
+        <?php $stockId              = (int) $warehouse->getStockId() ?>
+        <?php $shippingMethod       = $this->getShippingMethod($stockId) ?>
+        <?php $shippingMethodName   = 'shipping_method['.$stockId.']' ?>
+        <?php $shippingRates        = $this->getShippingRates($stockId) ?>
+        <?php $isSoleCarrier        = (count($shippingRates) == 1) ? true : false ?>
+        <div class="warehouse" warehouse:stockid="<?php echo $stockId ?>"<?php if ($config->isInformationVisible()) : ?> warehouse:title="<?php echo $warehouse->getTitle() ?>"<?php endif ?>>
+            <?php if (count($shippingRates)) : ?>
+
+            <?php if ($config->isInformationVisible()) : ?>
+            <div class="warehouse-header">
+                <span class="warehouse-name"><?php echo $this->htmlEscape($warehouse->getTitle()) ?></span>
+
+                <?php if ($config->isOriginVisible()) : ?>
+                <span class="warehouse-origin"><?php echo $this->htmlEscape($warehouse->getOriginString()) ?></span>
+                <?php endif ?>
+                
+                <?php if ($config->isDistanceVisible()) : ?>
+                <span class="warehouse-distance"><?php echo $this->htmlEscape($this->getCustomerAddressStockDistanceString($stockId)) ?></span>
+                <?php endif ?>
+
+                <?php if ($config->isDescriptionVisible()) : ?>
+                <span class="warehouse-description"><?php echo $this->htmlEscape($warehouse->getDescription()) ?></span>
+                <?php endif ?>
+            </div>
+            <?php endif ?>
+
+            <div class="warehouse-content">
+                <dl class="sp-methods shipping-methods shipment-methods">
+                    <?php foreach ($shippingRates as $carrierCode => $carrierShippingRates): ?>
+                    <dt><?php echo $this->escapeHtml($this->getCarrierName($carrierCode)) ?></dt>
+                    <dd>
+                        <ul>
+                            <?php $isSoleRate = ($isSoleCarrier && count($carrierShippingRates) == 1) ? true : false ?>
+                            <?php foreach ($carrierShippingRates as $rate): ?>
+                            <?php $rateCode         = $rate->getCode() ?>
+                            <?php $rateId           = $rateIdPrefix.$rateCode.'_'.$stockId ?>
+                            <?php $ratePrice        = (float) $rate->getPrice() ?>
+                            <li>
+                                <?php if ($rate->getErrorMessage()): ?>
+                                
+                                <ul class="messages">
+                                    <li class="error-msg">
+                                        <ul>
+                                            <li><?php echo $this->escapeHtml($rate->getErrorMessage()) ?></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                
+                                <?php else: ?>
+                                
+                                <?php if ($isSoleRate) : ?>
+                                <span class="no-display">
+                                    <input class="shipping-method" name="<?php echo $shippingMethodName ?>" type="radio" value="<?php echo $rateCode ?>" id="<?php echo $rateId ?>" checked="checked" />
+                                </span>
+                                <?php else: ?>
+                                <input class="radio shipping-method" name="<?php echo $shippingMethodName ?>" type="radio" value="<?php echo $rateCode ?>" id="<?php echo $rateId ?>"<?php if ($rateCode === $shippingMethod) : ?> checked="checked"<?php endif ?>/>
+                                <?php endif ?>
+                                <label for="<?php echo $rateId ?>">
+                                <?php echo $this->escapeHtml($rate->getMethodTitle()) ?>
+                                <?php $excTaxPrice = $this->getShippingPrice($stockId, $ratePrice, $displayShippingPriceIncTax) ?>
+                                <?php $incTaxPrice = $this->getShippingPrice($stockId, $ratePrice, true) ?>
+                                <?php echo $excTaxPrice ?>
+                                <?php if ($displayShippingBothPrices && $incTaxPrice != $excTaxPrice): ?>(<?php echo $this->__('Incl. Tax') ?> <?php echo $incTaxPrice ?>)<?php endif ?>
+                                </label>
+                                
+                                <?php endif ?>
+                            </li>
+                            <?php endforeach ?>
+                        </ul>
+                    </dd>
+                    <?php endforeach ?>
+                </dl>
+            </div>
+            <?php else : ?>
+
+                <?php if ($config->isInformationVisible()) : ?>
+                <p><?php echo sprintf(
+                    $helper->__('There are no shipping methods available for %s warehouse.'), 
+                    $this->escapeHtml($warehouse->getTitle())
+                ) ?></p>
+                <?php else : ?>
+                <p><?php echo $helper->__('There are no shipping methods available.') ?></p>
+                <?php endif ?>
+        
+            <?php endif ?>
+        </div>
+        <?php endforeach ?>
+    </div>
+
+</div>

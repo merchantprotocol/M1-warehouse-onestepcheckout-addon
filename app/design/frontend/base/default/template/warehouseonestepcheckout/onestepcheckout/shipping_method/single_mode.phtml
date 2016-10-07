@@ -1,0 +1,94 @@
+<?php
+/**
+ * Innoexts
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the InnoExts Commercial License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://innoexts.com/commercial-license-agreement
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@innoexts.com so we can send you a copy immediately.
+ * 
+ * @category    Innoexts
+ * @package     Innoexts_Warehouse
+ * @copyright   Copyright (c) 2013 Innoexts (http://www.innoexts.com)
+ * @license     http://innoexts.com/commercial-license-agreement  InnoExts Commercial License
+ */
+?>
+
+<?php $helper                       = $this->helper('warehouse') ?>
+<?php $taxHelper                    = $helper->getTaxHelper() ?>
+<?php $displayShippingPriceIncTax   = $taxHelper->displayShippingPriceIncludingTax() ?>
+<?php $displayShippingBothPrices    = $taxHelper->displayShippingBothPrices() ?>
+<?php $rateIdPrefix                 = 's_method_' ?>
+<?php $shippingMethod               = $this->getShippingMethod() ?>
+<?php $shippingMethodName           = 'shipping_method' ?>
+<?php $shippingRates                = $this->getShippingRates() ?>
+<?php $isSoleCarrier                = (count($shippingRates) == 1) ? true : false ?>
+
+<div id="shipping-method-single-mode">
+    
+    <?php if (count($shippingRates)) : ?>
+    
+    <dl class="sp-methods shipping-methods shipment-methods">
+        <?php foreach ($shippingRates as $carrierCode => $carrierShippingRates): ?>
+        <dt><?php echo $this->escapeHtml($this->getCarrierName($carrierCode)) ?></dt>
+        <dd>
+            <ul>
+                <?php $isSoleRate = ($isSoleCarrier && count($carrierShippingRates) == 1) ? true : false ?>
+                <?php  foreach ($carrierShippingRates as $rate): ?>
+                <?php $rateCode         = $rate->getCode() ?>
+                <?php $rateId           = $rateIdPrefix.$rateCode ?>
+                <?php $ratePrice        = (float) $rate->getPrice() ?>
+                <li>
+                    <?php if ($rate->getErrorMessage()): ?>
+                    
+                    <ul class="messages">
+                        <li class="error-msg">
+                            <ul>
+                                <li><?php echo $this->escapeHtml($rate->getErrorMessage()) ?></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <?php else: ?>
+                    
+                    <?php if ($isSoleRate) : ?>
+                    
+                    <span class="no-display">
+                        <input class="shipping-method" name="<?php echo $shippingMethodName ?>" type="radio" value="<?php echo $rateCode ?>" id="<?php echo $rateId ?>" checked="checked" />
+                    </span>
+                    
+                    <?php else: ?>
+                    
+                    <input class="radio shipping-method" name="<?php echo $shippingMethodName ?>" type="radio" value="<?php echo $rateCode ?>" id="<?php echo $rateId ?>"<?php if ($rateCode === $shippingMethod) : ?> checked="checked"<?php endif ?>/>
+                    
+                    <?php endif ?>
+                    <label for="<?php echo $rateId ?>">
+                    <?php echo $this->escapeHtml($rate->getMethodTitle()) ?>
+                    <?php $excTaxPrice = $this->getShippingPrice($ratePrice, $displayShippingPriceIncTax) ?>
+                    <?php $incTaxPrice = $this->getShippingPrice($ratePrice, true) ?>
+                    <?php echo $excTaxPrice ?>
+                    <?php if ($displayShippingBothPrices && $incTaxPrice != $excTaxPrice): ?>
+                        (<?php echo $this->__('Incl. Tax') ?> <?php echo $incTaxPrice ?>)
+                    <?php endif ?>
+                    </label>
+                    
+                    <?php endif ?>
+                </li>
+                <?php endforeach ?>
+            </ul>
+        </dd>
+        <?php endforeach ?>
+    </dl>
+    
+    <?php else : ?>
+    
+        <p><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></p>
+        
+    <?php endif ?>
+    
+</div>
