@@ -318,7 +318,7 @@ class Innoexts_WarehouseOneStepCheckout_Block_Onestepcheckout_Checkout
                     if(
                         !isset($shipping_method[$stockId]) || 
                         empty($shipping_method[$stockId]) || 
-                        !in_array($shipping_method[$stockId],$availableRates)
+                        !in_array($shipping_method[$stockId],$availableRates['codes'])
                     ) {
                         $this->formErrors['shipping_method'] = true;
                     }
