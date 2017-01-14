@@ -6,7 +6,7 @@ php:
 env:
   global:
     - REPO_NAME=M1-warehouse-onestepcheckout-addon
-    - DEPLOYDIR=/var/www/html/M1-warehouse-onestepcheckout-addon/
+    - DEPLOYDIR=/var/www/html/M1-warehouse-onestep-checkout/
     - RELEASE_VERSION=1.9.2.3
     - DEPLOYHOST=merchantdemos
   matrix:
