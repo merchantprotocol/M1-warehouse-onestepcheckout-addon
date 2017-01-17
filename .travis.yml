@@ -129,12 +129,6 @@ after_script:
   - sudo cat var/log/system.log
   - sudo cat var/report/*
 
-after_success:
-
- ## Tag and distribute the release
-  - sudo chmod +x $MAGE_DIR/.modman/M1-travis-deployment-files/release.sh
-  - sudo bash $MAGE_DIR/.modman/M1-travis-deployment-files/release.sh $MAGE_DIR $REPO_NAME
-
 before_deploy:
 
  ## Move SSH config file
