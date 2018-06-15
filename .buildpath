@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="app/code/local/MP/WarehouseOneStepCheckout/Block/Adminhtml/Sales/Order/View"/>
+	<buildpathentry kind="src" path="app/code/local/MP/WarehouseOneStepCheckout/Block/Onestepcheckout"/>
+	<buildpathentry kind="src" path="app/code/local/MP/WarehouseOneStepCheckout/controllers/Checkout"/>
+	<buildpathentry kind="src" path="app/code/local/MP/WarehouseOneStepCheckout/controllers/Onestepcheckout"/>
+	<buildpathentry kind="src" path="app/code/local/MP/WarehouseOneStepCheckout/Helper"/>
+	<buildpathentry kind="src" path="app/code/local/MP/WarehouseOneStepCheckout/Model/Onestepcheckout/Observers"/>
+	<buildpathentry kind="src" path="app/code/local/MP/WarehouseOneStepCheckout/Model/Sales"/>
+	<buildpathentry kind="src" path="app/code/local/MP/WarehouseOneStepCheckout/sql/warehouseonestepcheckout_setup"/>
+	<buildpathentry kind="src" path="app/design/frontend/base/default/template/warehouseonestepcheckout/onestepcheckout"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+</buildpath>

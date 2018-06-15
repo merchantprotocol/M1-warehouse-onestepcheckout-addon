@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Mage Plugins, Inc
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the InnoExts Commercial License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://mageplugins.net/commercial-license-agreement
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to mageplugins@gmail.com so we can send you a copy immediately.
+ * 
+ * @category    MP
+ * @package     MP_WarehouseOneStepCheckout
+ * @copyright   Copyright (c) 2006-2018 Mage Plugins, Inc. and affiliates (https://mageplugins.net/)
+ * @license     https://mageplugins.net/commercial-license-agreement  InnoExts Commercial License
+ */
+-->
+<config>
+    <modules>
+        <MP_WarehouseOneStepCheckout>
+            <version>1.0.0.3</version>
+        </MP_WarehouseOneStepCheckout>
+    </modules>
+    <frontend>
+        <routers>
+            <onestepcheckout>
+                <args>
+                    <modules>
+                        <MP_WarehouseOneStepCheckout before="Idev_OneStepCheckout">MP_WarehouseOneStepCheckout_Onestepcheckout</MP_WarehouseOneStepCheckout>
+                    </modules>
+                </args>
+            </onestepcheckout>
+            <checkout>
+                <args>
+                    <modules>
+                        <MP_WarehouseOneStepCheckout before="Idev_OneStepCheckout">MP_WarehouseOneStepCheckout_Checkout</MP_WarehouseOneStepCheckout>
+                    </modules>
+                </args>
+            </checkout>
+        </routers>
+        <translate>
+            <modules>
+                <MP_WarehouseOneStepCheckout>
+                    <files>
+                        <default>MP_WarehouseOneStepCheckout.csv</default>
+                    </files>
+                </MP_WarehouseOneStepCheckout>
+            </modules>
+        </translate>
+        <layout>
+              <updates>
+                  <warehouseonestepcheckout>
+                      <file>warehouseonestepcheckout.xml</file>
+                  </warehouseonestepcheckout>
+              </updates>
+        </layout>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <MP_WarehouseOneStepCheckout>
+                    <files>
+                        <default>MP_WarehouseOneStepCheckout.csv</default>
+                    </files>
+                </MP_WarehouseOneStepCheckout>
+            </modules>
+        </translate>
+        <layout>
+              <updates>
+                  <warehouseonestepcheckout>
+                      <file>warehouseonestepcheckout.xml</file>
+                  </warehouseonestepcheckout>
+              </updates>
+        </layout>
+    </adminhtml>
+    <global>
+        <models>
+            <warehouseonestepcheckout>
+                <class>MP_WarehouseOneStepCheckout_Model</class>
+                <resourceModel>warehouseonestepcheckout_mysql4</resourceModel>
+            </warehouseonestepcheckout>
+            <warehouseonestepcheckout_mysql4>
+                <class>MP_WarehouseOneStepCheckout_Model_Mysql4</class>
+            </warehouseonestepcheckout_mysql4>
+            <onestepcheckout>
+                <rewrite>
+                    <Observers_PresetDefaults>MP_WarehouseOneStepCheckout_Model_Onestepcheckout_Observers_PresetDefaults</Observers_PresetDefaults>
+                </rewrite>
+            </onestepcheckout>
+            <sales>
+                <rewrite>
+                    <quote>MP_WarehouseOneStepCheckout_Model_Sales_Quote</quote>
+                </rewrite>
+            </sales>
+        </models>
+        <resources>
+            <warehouseonestepcheckout_setup>
+                <setup>
+                    <module>MP_WarehouseOneStepCheckout</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </warehouseonestepcheckout_setup>
+            <warehouseonestepcheckout_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </warehouseonestepcheckout_write>
+            <warehouseonestepcheckout_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </warehouseonestepcheckout_read>
+        </resources>
+        <blocks>
+            <warehouseonestepcheckout>
+                <class>MP_WarehouseOneStepCheckout_Block</class>
+            </warehouseonestepcheckout>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_view_items>MP_WarehouseOneStepCheckout_Block_Adminhtml_Sales_Order_View_Items</sales_order_view_items>
+                </rewrite>
+            </adminhtml>
+            <onestepcheckout>
+                <rewrite>
+                    <checkout>MP_WarehouseOneStepCheckout_Block_Onestepcheckout_Checkout</checkout>
+                </rewrite>
+            </onestepcheckout>
+        </blocks>
+        <helpers>
+            <warehouseonestepcheckout>
+                <class>MP_WarehouseOneStepCheckout_Helper</class>
+            </warehouseonestepcheckout>
+            <onestepcheckout>
+                <rewrite>
+                    <checkout>MP_WarehouseOneStepCheckout_Helper_Onestepcheckout_Checkout</checkout>
+                </rewrite>
+            </onestepcheckout>
+        </helpers>
+    </global>
+</config>
